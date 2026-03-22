@@ -79,6 +79,18 @@ def delete_user(username):
         con.commit()
         cur.close()
         con.close()
+def last_message_time(username):
+    con=sqlite3.connect(DB_FILE)
+    cur=con.cursor()
+    try:
+        cur.execute("SELECT timestamp FROM Messages WHERE username = ? ORDER BY timestamp DESC LIMIT 1",(username,))
+        result = cur.fetchone()
+        print(f"Last Messgae for this {username} is:",result)
+    except sqlite3.Error as e:
+        print("An error occurred:", e)
+    finally:
+        cur.close()
+        con.close()
 #this function runs first
 if __name__ == "__main__":
     init_db()
